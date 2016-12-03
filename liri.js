@@ -55,6 +55,29 @@ var keys = require('./keys.js')
 var request = require('request');
 var fs = require('fs');
 
+// This is the command value area used at 3rd item of Node array
+var command = process.argv[2]; 
+
+var logToFile;
+
+switch(command) {
+	case 'spotify-this-song'
+	spotifyMeCapn();
+	break;
+
+	case 'my-tweets'
+	tweetsGalore();
+	break;
+
+	case 'movie-this'
+	movieBuff();
+	break;
+
+	case 'do-what-it-says'
+	whatCanIDo();
+	break;
+}
+
 // Spotify Function
 function spotifyMeCapn() {
 
@@ -78,6 +101,10 @@ function whatCanIDo() {
 
     fs.readFile('random.txt', function(error, body) {
 
+    	if (error) {
+
+    		return console.log('I cannot do that.');
+    	}
         
     });
 }
