@@ -54,7 +54,6 @@ var Twitter = require('twitter');
 var keys = require('./keys.js');
 var request = require('request');
 var fs = require('fs');
-var movieName = process;
 
 // This is the command value area used at 3rd item of Node array
 var command = process.argv[2]; 
@@ -141,7 +140,7 @@ function movieBuff() {
 		movieName = 'Mr. Nobody';
 	}
 
-	var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&r=json";
+	var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&r=json&tomatoes=true";
 
 		// console.log(queryUrl);
 
