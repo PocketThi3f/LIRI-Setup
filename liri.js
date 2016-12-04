@@ -135,6 +135,8 @@ function tweetsGalore() {
 // OMDB/Movie Function
 function movieBuff() {
 
+	var movieName = process.argv[3];
+
 	if (movieName == undefined) {
 		movieName = 'Mr. Nobody';
 	}
