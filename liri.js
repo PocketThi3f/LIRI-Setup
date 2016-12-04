@@ -51,60 +51,107 @@
 // Global Variables
 var spotify = require('spotify');
 var Twitter = require('twitter');
-var keys = require('./keys.js')
+var keys = require('./keys.js');
 var request = require('request');
 var fs = require('fs');
 
 // This is the command value area used at 3rd item of Node array
 var command = process.argv[2]; 
-
 var logToFile;
 
-switch(command) {
-	case 'spotify-this-song'
-	spotifyMeCapn();
-	break;
+	switch (command) {
+		case 'spotify-this-song':
+		spotifyMeCapn();
+		break;
 
-	case 'my-tweets'
-	tweetsGalore();
-	break;
+		case 'my-tweets':
+		tweetsGalore();
+		break;
 
-	case 'movie-this'
-	movieBuff();
-	break;
+		case 'movie-this':
+		movieBuff();
+		break;
 
-	case 'do-what-it-says'
-	whatCanIDo();
-	break;
-}
+		case 'do-what-it-says':
+		whatCanIDo();
+		break;
+	}
+
 
 // Spotify Function
 function spotifyMeCapn() {
 
-    
+	var songSearch = process.argv[3];
+
+	spotify.search({ type: 'track', query: songSearch }, 
+		function(err, data) {
+    	if (err) {
+
+        	console.log('Error occurred: ' + err);
+        	return;
+    	}
+	});   
 }
 
-// Twitter CallBack Function
+// Twitter Function
 function tweetsGalore() {
 
+	var client = new Twitter(keys.twitterKeys);
 
+	var params = {screen_name: 'AsiaEuropeNA'};
+		client.get('statuses/user_timeline', params, function(error, tweets, response) {
+ 			if (!error) {
+   			 	// console.log((tweets[0]));
+   			 	for (var i = 0; i < tweets.length; i++) {
+	   			 	console.log('============================================================');
+	   			 	console.log(tweets[i].text + '\n');
+	   			 	console.log(tweets[i].created_at + '\n');
+	   			 	console.log('============================================================');
+   				}
+   			}	
+		});
 }
 
 // OMDB/Movie Function
 function movieBuff() {
 
+	var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&r=json";
 
+		console.log(queryUrl);
+
+	request(queryUrl, function(error, response, body) {
+
+	  	// If the request is successful
+	  	if (!error && response.statusCode === 200) {
+	  		var body = JSON.parse(body);
+			   	// Parse the body 
+			   	console.log('Title: ' + body.Title);
+		     	console.log('Year: ' + body.Year);
+		      	console.log('Rated: ' + body.Rated);
+		     	console.log('IMDB Rating: ' + body.imdbRating);
+		      	console.log('Country: ' + body.Country);
+		      	console.log('Language: ' + body.Language);
+		      	console.log('Plot: ' + body.Plot);
+		     	console.log('Actors: ' + body.Actors);
+		      	console.log('Rotten Tomatoes Rating: ' + body.tomatoRating);
+		      	console.log('Rotton Tomatoes URL: ' + body.tomatoURL);
+	  	}
+	});
 }
 
-// Do-What-It-Says Function 
-function whatCanIDo() {
+// // Do-What-It-Says Function 
+// function whatCanIDo() {
 
-    fs.readFile('random.txt', function(error, body) {
+//     fs.readFile('random.txt', 'utf8', function(error, body) {
 
-    	if (error) {
+//     	if (error) {
 
-    		return console.log('I cannot do that.');
-    	}
+//     		return console.log('I cannot do that.');
+//     	}
+//     	else {
+
+//     		return console.log(body, null, 2);
+//     	}
         
-    });
-}
+//     });
+// }
