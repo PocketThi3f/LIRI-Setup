@@ -1,5 +1,5 @@
 // Twitter Keys for Callback Function
-console.log('this is loaded');
+console.log('Loading Content...');
 
 exports.twitterKeys = {
   consumer_key: 'oYVnXKfnl7ehLTBbKmBG3GhJ0',

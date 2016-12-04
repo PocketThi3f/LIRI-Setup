@@ -54,6 +54,7 @@ var Twitter = require('twitter');
 var keys = require('./keys.js');
 var request = require('request');
 var fs = require('fs');
+var movieName = process;
 
 // This is the command value area used at 3rd item of Node array
 var command = process.argv[2]; 
@@ -118,9 +119,9 @@ function tweetsGalore() {
 		client.get('statuses/user_timeline', params, function(error, tweets, response) {
  			if (!error) {
    			 	// console.log((tweets[0]));
-   			 	for (var i = 0; i < tweets.length; i++) {
+   			 	for (var i = 0; i <= 20; i++) {
 	   			 	console.log('============================================================');
-	   			 	console.log(tweets[i].text + '\n');
+	   			 	console.log('\n'+tweets[i].text);
 	   			 	console.log(tweets[i].created_at + '\n');
 	   			 	console.log('============================================================');
    				}
@@ -134,10 +135,13 @@ function tweetsGalore() {
 // OMDB/Movie Function
 function movieBuff() {
 
-	var movieName = process.argv[3];
+	if (movieName == undefined) {
+		movieName = 'Mr. Nobody';
+	}
+
 	var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&r=json";
 
-		console.log(queryUrl);
+		// console.log(queryUrl);
 
 	request(queryUrl, function(error, response, body) {
 
@@ -153,7 +157,7 @@ function movieBuff() {
 		      	console.log('Language: ' + body.Language);
 		      	console.log('Plot: ' + body.Plot);
 		     	console.log('Actors: ' + body.Actors);
-		      	console.log('Rotten Tomatoes Rating: ' + body.tomatoRating);
+		      	console.log('Rotten Tomatoes Rating: ' + body.tomatoUserRating);
 		      	console.log('Rotton Tomatoes URL: ' + body.tomatoURL);
 	  	}
 	  	else {
@@ -170,11 +174,12 @@ function whatCanIDo() {
 
     	if (error) {
 
-    		return console.log('I cannot do that.');
+    		return console.log('I cannot do that. There is an '+error);
     	}
     	else {
 
-    		return console.log(body);
+    		console.log(body);
+    		spotifyMeCapn();
     	}
         
     });
