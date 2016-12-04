@@ -57,7 +57,6 @@ var fs = require('fs');
 
 // This is the command value area used at 3rd item of Node array
 var command = process.argv[2]; 
-var logToFile;
 
 	switch (command) {
 		case 'spotify-this-song':
@@ -83,12 +82,29 @@ function spotifyMeCapn() {
 
 	var songSearch = process.argv[3];
 
-	spotify.search({ type: 'track', query: songSearch }, 
-		function(err, data) {
-    	if (err) {
+	if (songSearch == null) {
+		songSearch = 'The Sign by Ace of Base';
+	}
 
+	spotify.search({ type: 'track', query: songSearch }, function(err, data) {
+    	if (err) {
         	console.log('Error occurred: ' + err);
         	return;
+    	}
+    	else {
+    		var artistName = data.tracks.items[0].artists[0].name;
+    		var songName = data.tracks.items[0].name;
+    		var previewLink = data.tracks.items[0].preview_url;
+    		var albumName = data.tracks.items[0].album.name;
+
+    		console.log('========== Spotify Song Info: ==========');
+    		console.log(' ')
+    		console.log("Artist name: " + artistName);
+    		console.log("Song name: " + songName);
+    		console.log("Preview Link: " + previewLink);
+    		console.log("Album Name: " + albumName);
+    		console.log(' ')
+    		console.log('========================================');
     	}
 	});   
 }
@@ -108,6 +124,9 @@ function tweetsGalore() {
 	   			 	console.log(tweets[i].created_at + '\n');
 	   			 	console.log('============================================================');
    				}
+   			}
+   			else {
+   				return console.log('Danger! Danger! Will-Robinson! There is an '+error);
    			}	
 		});
 }
@@ -115,6 +134,7 @@ function tweetsGalore() {
 // OMDB/Movie Function
 function movieBuff() {
 
+	var movieName = process.argv[3];
 	var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&r=json";
 
 		console.log(queryUrl);
@@ -136,22 +156,26 @@ function movieBuff() {
 		      	console.log('Rotten Tomatoes Rating: ' + body.tomatoRating);
 		      	console.log('Rotton Tomatoes URL: ' + body.tomatoURL);
 	  	}
+	  	else {
+	  		console.log('If you haven\'t watched "Mr. Nobody," then you should: http://www.imdb.com/title/tt0485947/');
+	  		console.log('It\'s on NetFlix!');
+	  	}
 	});
 }
 
-// // Do-What-It-Says Function 
-// function whatCanIDo() {
+// Do-What-It-Says Function 
+function whatCanIDo() {
 
-//     fs.readFile('random.txt', 'utf8', function(error, body) {
+    fs.readFile('random.txt', 'utf8', function(error, body) {
 
-//     	if (error) {
+    	if (error) {
 
-//     		return console.log('I cannot do that.');
-//     	}
-//     	else {
+    		return console.log('I cannot do that.');
+    	}
+    	else {
 
-//     		return console.log(body, null, 2);
-//     	}
+    		return console.log(body);
+    	}
         
-//     });
-// }
+    });
+}
